@@ -84,14 +84,20 @@ def cadastrar_produto():
                         'valor': entry_valor.get(),
                         'disponivel': entry_disponivel.get().upper()
                     })
-            conexao.commit()
-            conexao.close()
+
 
             entry_nome.delete(0,"end")
             entry_descricao.delete(0,"end")
             entry_valor.delete(0,"end")
             entry_disponivel.delete(0,"end")
 
+            excluir_lista()
+            criar_lista()
+            
+            filtrar_produto("nome")
+
+            conexao.commit()
+            conexao.close()
     else:
         return messagebox.showinfo("Alerta","Por favor, preencha todos os campos.")
 
