@@ -70,8 +70,8 @@ def cadastrar_produto():
             return messagebox.showinfo("Alerta", " Por favor, não coloque números no nome.")
         
 
-        elif entry_disponivel.get() != "False" and entry_disponivel.get() != "True":
-            return messagebox.showinfo("Alerta", "Por favor, insira valores de apenas True ou False na disponibilidade")
+        elif entry_disponivel.get().upper() != "SIM" and entry_disponivel.get().upper() != "NÃO":
+            return messagebox.showinfo("Alerta", "Por favor, insira valores de apenas Sim ou Não na disponibilidade")
         
         else:
             if int(entry_valor.get()) < 1:
@@ -82,7 +82,7 @@ def cadastrar_produto():
                         'nome': entry_nome.get(),
                         'descricao': entry_descricao.get(),
                         'valor': entry_valor.get(),
-                        'disponivel': entry_disponivel.get()
+                        'disponivel': entry_disponivel.get().upper()
                     })
             conexao.commit()
             conexao.close()
@@ -169,7 +169,7 @@ entry_descricao.grid(row=2,column=1,padx=10, pady=10)
 entry_valor = tk.Entry(janela,text="Valor" , width = 30)
 entry_valor.grid(row=3,column=1,padx=10, pady=10)
 
-disponivel = [True, False]
+disponivel = ["Sim", "Não"]
 
 entry_disponivel = ttk.Combobox(janela, width = 27)
 entry_disponivel.grid(row=4,column=1,padx=10, pady=10)
