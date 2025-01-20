@@ -4,4 +4,4 @@
 - Sistema de cadastro e filtragem
 
 ## Linguagens de programação utilizadas:
-- Python
+- 🐍 Python
