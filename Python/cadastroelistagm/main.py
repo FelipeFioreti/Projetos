@@ -41,6 +41,8 @@ janela.resizable(height=False,width=False)
 estilo = Style(janela)
 estilo.theme_use("clam")
 
+
+
 def excluir_produtos():
     conexao = conexao_banco()
     c = conexao.cursor()
@@ -53,7 +55,8 @@ def excluir_produtos():
 
     conexao.commit()
     conexao.close()
-    
+
+
 def cadastrar_produto():
     conexao = conexao_banco()
     c = conexao.cursor()
@@ -101,6 +104,7 @@ def cadastrar_produto():
     else:
         return messagebox.showinfo("Alerta","Por favor, preencha todos os campos.")
 
+
 def verificar_entradas(entrada):
     if type(entrada) is str:  
         lista_verificacao = entrada.split(" ")
@@ -109,6 +113,7 @@ def verificar_entradas(entrada):
             return False
         else:
             return True
+
         
 def filtrar_produto(filtro):
     conexao = conexao_banco()
@@ -122,9 +127,9 @@ def filtrar_produto(filtro):
     for elem in lista_produto:
         lista_cursos.insert('','end',values=elem)
 
-    #excluir_lista()
     conexao.commit()
     conexao.close()
+
 
 def filtrar_produto_nome():
     filtrar_produto("nome")
