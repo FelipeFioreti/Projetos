@@ -3,61 +3,99 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+
 typedef struct no{
     int codigo;
+    char nome[20];
     struct no * prox;
+    struct no * back;
 } no;
+
 int cod, op;
 char resp;
-struct no * corrente = NULL, * auxiliar = NULL, * inicio = NULL;
+char nomePessoa[20];
+struct no * corrente = NULL, * auxiliar = NULL, * inicio = NULL, * fim = NULL;
 
 void inserir(int numero){
     struct no * pont;
     auxiliar = corrente;
     corrente = (no*)malloc(sizeof(no));
     corrente -> codigo = numero;
+    //Arrumar essa linha
+    //corrente -> nome = nomePessoa;
 
     if (inicio == NULL)
     {
-
         inicio = corrente;
         auxiliar = corrente;
+        fim = corrente;
+        corrente -> back = NULL;
+        corrente -> prox = NULL;
 
     }else{
 
         if(corrente -> codigo <= inicio -> codigo){
             corrente -> prox = inicio;
+            inicio -> back = corrente;
             inicio = corrente;
         }else{
 
             pont = inicio;
 
             while(corrente -> codigo > pont -> codigo){
+                auxiliar = pont;
 
-                if(pont -> prox == NULL){
+                if (pont -> prox == NULL) {
                     auxiliar -> prox = corrente;
+                    corrente -> back = auxiliar;
                     corrente -> prox = NULL;
                     auxiliar = corrente;
-                }
+                    fim = corrente;
+                };
 
-                auxiliar = pont;
                 pont = pont -> prox;
             }
 
-            corrente -> prox = auxiliar -> prox;
-            auxiliar -> prox = corrente;
+            if((auxiliar -> codigo < corrente -> codigo) && (corrente -> codigo < pont -> codigo)){
+                corrente -> prox = pont;
+                corrente -> back = auxiliar;
+                auxiliar -> prox = corrente;
+            }
+
 
         }
     }
 }
 
 void exibir(){
-    auxiliar = inicio;
-    while (auxiliar != NULL)
-    {
-        printf("%d ", auxiliar -> codigo);
-        auxiliar = auxiliar -> prox;
+
+    printf("Imprimir do início ao fim [1] ou do fim ao início [2] ? \n");
+    scanf("%d", &resp);
+
+    switch(resp){
+        case 1:
+            auxiliar = inicio;
+            while (auxiliar != NULL)
+            {
+                printf("Nome: %s \n", auxiliar -> nome);
+                printf("Codigo: %d \n\n", auxiliar -> codigo);
+                auxiliar = auxiliar -> prox;
+            }
+            break;
+        case 2:
+            auxiliar = fim;
+            while (auxiliar != NULL)
+            {
+                printf("Nome: %s \n", auxiliar -> nome);
+                printf("Codigo: %d \n\n", auxiliar -> codigo);
+                auxiliar = auxiliar -> back;
+            }
+            break;
+        default:
+            printf("Resposta inválida.");
     }
+
+
 }
 
 void excluir(){
@@ -123,10 +161,15 @@ do{
                 printf("Informe o codigo \n");
                 scanf("%d", &cod);
 
+                printf("Informe o nome \n");
+                scanf("%s", &nomePessoa);
+
                 inserir(cod);
 
                 printf("Quer continuar a inserir? \n");
                 scanf("%s", &resp);
+
+
                 resp = toupper(resp);
             }while(resp != 'N');
             break;
