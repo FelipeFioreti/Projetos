@@ -21,8 +21,8 @@ void inserir(int numero){
     auxiliar = corrente;
     corrente = (no*)malloc(sizeof(no));
     corrente -> codigo = numero;
-    //Arrumar essa linha
-    //corrente -> nome = nomePessoa;
+
+    strcpy(&corrente -> nome, &nomePessoa);
 
     if (inicio == NULL)
     {
