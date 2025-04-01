@@ -6,57 +6,15 @@
 
 typedef struct pilha{
     int dados;
-    struct no * prox;
-    struct no * back;
+    struct pilha * next;
+    struct pilha * back;
 } pilha;
 
-int op, cod = 0;
-char resp = '';
-struct pilha * inicio = NULL, fim = NULL; corrente = NULL, auxiliar = NULL;
+int opcaoMenu, valorProcura = 0, valorInserir = 0;
+int contador = 0;
+char respostaInserir = ' ';
+struct pilha * corrente = NULL, * auxiliar = NULL;
 
-
-void inserir(int codigo){
-
-    corrente = (pilha *)malloc(sizeof(pilha));
-    corrente -> dados = codigo;
-    if(inicio = NULL){
-        inicio = corrente;
-        auxiliar = corrente;
-        fim = corrente;
-        inicio -> back = NULL;
-        inicio -> prox = NULL;
-    }else{
-        auxiliar = inicio;
-        while(auxiliar -> prox != NULL){
-            auxiliar = auxiliar -> prox;
-        }
-        corrente -> back = auxiliar;
-        auxiliar -> prox = corrente;
-        fim = corrente;
-    }
-
-}
-
-int top(){
-    return fim.dados;
-}
-
-void push(){
-    corrente = (pilha *)malloc(sizeof(pilha));
-    corrente -> next = NULL;
-    fim -> prox = corrente;
-    corrente -> back = fim;
-    fim = corrente;
-    fim
-}
-
-void pop(){
-    auxiliar = fim;
-    auxiliar = auxiliar -> back;
-    auxiliar -> prox = NULL;
-    free(fim);
-    fim = auxiliar;
-}
 
 int main(void){
 
@@ -64,47 +22,45 @@ int main(void){
 
         system("cls");
         system("pause");
-        printf("\n [ 1 ] Inserindo elementos na lista");
-        printf("\n [ 2 ] Exibindo os elementos da lista");
-        printf("\n [ 3 ] Removendo os elementos da lista");
-        printf("\n [ 4 ] Classificar os elementos da lista");
-        printf("\n [ 5 ] Sair");
+        printf("\n [ 1 ] Inserir elementos na pilha");
+        printf("\n [ 2 ] Procurar elementos na pilha");
+        printf("\n [ 3 ] Mostrar elemento no topo");
+        printf("\n [ 4 ] Sair");
         printf("\n\nInforme a opcao [ ]");
-        scanf("%d", &op);
+        scanf("%d", &opcaoMenu);
 
-        switch (op)
+        switch (opcaoMenu)
         {
             case 1:
                 do{
                     printf("Informe o codigo \n");
-                    scanf("%d", &cod);
+                    scanf("%d", &valorInserir);
 
-                    inserir(cod);
+                    push(valorInserir);
 
                     printf("Quer continuar a inserir? \n");
-                    scanf("%s", &resp);
+                    scanf("%s", &respostaInserir);
 
 
-                    resp = toupper(resp);
-                }while(resp != 'N');
+                    respostaInserir = toupper(respostaInserir);
+                }while(respostaInserir != 'N');
                 break;
 
             case 2:
-                printf("Funcionalidade está sendo implementada./n");
+                printf("Insira o valor a ser procurado: \n");
+                scanf("%d", &valorProcura);
+
+                pop(valorProcura);
+
                 system("pause");
                 break;
 
             case 3:
-                printf("Funcionalidade está sendo implementada./n");
+                top();
                 system("pause");
                 break;
 
             case 4:
-                printf("Funcionalidade está sendo implementada./n");
-                system("pause");
-                break;
-
-            case 5:
                 printf("\nSaindo...\n");
                 system("pause");
                 exit(0);
@@ -114,7 +70,62 @@ int main(void){
                 printf("\nOpcao invalida, tente novamente");
                 system("pause");
         }
-    }while(op != 4);
+    }while(opcaoMenu != 4);
+
+}
+
+void top(){
+
+    if(corrente == NULL){
+        printf("A pilha não possui nenhum valor, então seu topo é Nulo. \n");
+    }else{
+        printf("Valor no topo: %i \n", corrente -> dados);
+    }
+
+
+}
+
+void push(int valor){
+    corrente = (pilha *)malloc(sizeof(pilha));
+    corrente -> dados = valor;
+    if(auxiliar == NULL){
+        corrente -> next = NULL;
+        corrente -> back = NULL;
+        auxiliar = corrente;
+        contador = contador + 1;
+    }else{
+        auxiliar -> next = corrente;
+        corrente -> back = auxiliar;
+        corrente -> next = NULL;
+        auxiliar = corrente;
+        contador = contador + 1;
+    }
+}
+
+void pop(int valor){
+
+    printf("teste1");
+    while(corrente -> dados != valor){
+
+        if(corrente -> back == NULL){
+            printf("teste2");
+            corrente -> next = NULL;
+            free(corrente);
+            corrente = NULL;
+            auxiliar = NULL;
+            printf("O elemento não foi encontrado na pilha");
+            contador = contador - 1;
+        }
+
+        auxiliar = corrente -> back;
+        free(corrente);
+        corrente = auxiliar;
+        contador = contador - 1;
+    }
+
+    if(corrente -> dados == valor){
+        printf("Valor encontrado no elemento: %i \n", contador);
+    }
 
 
 }
