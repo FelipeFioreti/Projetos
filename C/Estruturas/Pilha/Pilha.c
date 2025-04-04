@@ -87,20 +87,27 @@ void top(){
 }
 
 void push(int valor){
-    corrente = (pilha *)malloc(sizeof(pilha));
-    corrente -> dados = valor;
-    if(auxiliar == NULL){
-        corrente -> next = NULL;
-        corrente -> back = NULL;
-        auxiliar = corrente;
-        contador = contador + 1;
+
+    if(contador > 5){
+        printf("Stack Overflow.\n");
+        printf("A pilha está cheia.");
     }else{
-        auxiliar -> next = corrente;
-        corrente -> back = auxiliar;
-        corrente -> next = NULL;
-        auxiliar = corrente;
-        contador = contador + 1;
+        corrente = (pilha *)malloc(sizeof(pilha));
+        corrente -> dados = valor;
+        if(auxiliar == NULL){
+            corrente -> next = NULL;
+            corrente -> back = NULL;
+            auxiliar = corrente;
+            contador = contador + 1;
+        }else{
+            auxiliar -> next = corrente;
+            corrente -> back = auxiliar;
+            corrente -> next = NULL;
+            auxiliar = corrente;
+            contador = contador + 1;
+        }
     }
+
 }
 
 void pop(int valor){
