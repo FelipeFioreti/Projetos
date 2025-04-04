@@ -43,7 +43,8 @@ int main(void){
 
 
                     respostaInserir = toupper(respostaInserir);
-                }while(respostaInserir != 'N');
+                }
+                while(respostaInserir != 'N');
                 break;
 
             case 2:
@@ -130,8 +131,8 @@ void pop(int valor){
             free(corrente);
             auxiliar -> next = NULL;
             corrente = auxiliar;
-            contador = contador - 1;
             printf("Valor encontrado no elemento: %i \n", contador);
+            contador = contador - 1;
         }
     }
 }
