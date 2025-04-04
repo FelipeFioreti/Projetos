@@ -104,28 +104,36 @@ void push(int valor){
 
 void pop(int valor){
 
-    printf("teste1");
-    while(corrente -> dados != valor){
+    if(corrente == NULL){
+        printf("A pilha está vazia. Adicione algo antes de buscar. \n");
+    }else{
+        while(corrente -> dados != valor){
 
-        if(corrente -> back == NULL){
-            printf("teste2");
-            corrente -> next = NULL;
+            if(corrente -> back == NULL){
+                corrente -> next = NULL;
+                free(corrente);
+                corrente = NULL;
+                auxiliar = NULL;
+                printf("O elemento não foi encontrado na pilha");
+                contador = contador - 1;
+                }
+
+            auxiliar = auxiliar -> back;
             free(corrente);
-            corrente = NULL;
-            auxiliar = NULL;
-            printf("O elemento não foi encontrado na pilha");
+            auxiliar -> next = NULL;
+            corrente = auxiliar;
             contador = contador - 1;
         }
 
-        auxiliar = corrente -> back;
-        free(corrente);
-        corrente = auxiliar;
-        contador = contador - 1;
+        if(corrente -> dados == valor){
+            auxiliar = auxiliar -> back;
+            free(corrente);
+            auxiliar -> next = NULL;
+            corrente = auxiliar;
+            contador = contador - 1;
+            printf("Valor encontrado no elemento: %i \n", contador);
+        }
     }
-
-    if(corrente -> dados == valor){
-        printf("Valor encontrado no elemento: %i \n", contador);
-    }
-
-
 }
+
+
