@@ -69,7 +69,7 @@ void inserir(int numero){
 
 void exibir(){
 
-    printf("Imprimir do início ao fim [1] ou do fim ao início [2] ? \n");
+    printf("Imprimir do inï¿½cio ao fim [1] ou do fim ao inï¿½cio [2] ? \n");
     scanf("%d", &resp);
 
     switch(resp){
@@ -92,7 +92,7 @@ void exibir(){
             }
             break;
         default:
-            printf("Resposta inválida.");
+            printf("Resposta invï¿½lida.");
     }
 
 
@@ -185,7 +185,7 @@ do{
             break;
 
         case 4:
-            printf("Funcionalidade está sendo implementada./n");
+            printf("Funcionalidade estï¿½ sendo implementada./n");
             system("pause");
             break;
 

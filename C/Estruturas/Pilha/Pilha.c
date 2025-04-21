@@ -6,15 +6,68 @@
 
 typedef struct pilha{
     int dados;
-    struct pilha * next;
     struct pilha * back;
 } pilha;
 
 int opcaoMenu, valorProcura = 0, valorInserir = 0;
-int contador = 0;
 char respostaInserir = ' ';
-struct pilha * corrente = NULL, * auxiliar = NULL;
+struct pilha * topo = NULL, * auxiliar = NULL;
 
+void novoElemento(int valor){
+    topo = (pilha *)malloc(sizeof(pilha));
+    topo -> dados = valor;
+}
+
+void top(){
+
+    if(topo == NULL){
+        printf("A pilha nÃ£o possui nenhum valor, entÃ£o seu topo Ã© Nulo. \n");
+    }else{
+        printf("Valor no topo: %i \n", topo -> dados);
+    }
+}
+
+void push(int valor){
+
+    if(topo == NULL){
+        novoElemento(valor);
+        topo -> back = NULL;
+        auxiliar = topo;
+    }else{
+        auxiliar = topo;
+        novoElemento(valor);
+        topo -> back = auxiliar;
+        auxiliar = topo;
+    }
+    
+}
+
+void pop(){
+    if(topo == NULL){
+        printf("A pilha estÃ¡ vazia.\n");
+    } else {
+        printf("Removendo o elemento: %d\n", topo->dados);
+        auxiliar = topo;
+        topo = topo->back;
+        free(auxiliar);
+    }
+}
+
+void mostrarPilha() {
+    pilha *temp = topo;
+    printf("Pilha atual (topo -> base): ");
+    while (temp != NULL) {
+        printf("%d ", temp->dados);
+        temp = temp->back;
+    }
+    printf("\n");
+}
+
+void liberarPilha() {
+    while (topo != NULL) {
+        pop(); 
+    }
+}
 
 int main(void){
 
@@ -22,10 +75,11 @@ int main(void){
 
         system("cls");
         system("pause");
-        printf("\n [ 1 ] Inserir elementos na pilha");
-        printf("\n [ 2 ] Procurar elementos na pilha");
-        printf("\n [ 3 ] Mostrar elemento no topo");
-        printf("\n [ 4 ] Sair");
+        printf("\n [ 1 ] Push");
+        printf("\n [ 2 ] Pop");
+        printf("\n [ 3 ] Topo");
+        printf("\n [ 4 ] Mostrar Pilha");
+        printf("\n [ 5 ] Sair");
         printf("\n\nInforme a opcao [ ]");
         scanf("%d", &opcaoMenu);
 
@@ -38,8 +92,8 @@ int main(void){
 
                     push(valorInserir);
 
-                    printf("Quer continuar a inserir? \n");
-                    scanf("%s", &respostaInserir);
+                    printf("Quer continuar a inserir?");
+                    scanf(" %c", &respostaInserir);
 
 
                     respostaInserir = toupper(respostaInserir);
@@ -48,10 +102,8 @@ int main(void){
                 break;
 
             case 2:
-                printf("Insira o valor a ser procurado: \n");
-                scanf("%d", &valorProcura);
 
-                pop(valorProcura);
+                pop();
 
                 system("pause");
                 break;
@@ -62,7 +114,13 @@ int main(void){
                 break;
 
             case 4:
+                mostrarPilha();
+                system("pause");
+                break;
+
+            case 5:
                 printf("\nSaindo...\n");
+                liberarPilha();
                 system("pause");
                 exit(0);
                 break;
@@ -71,77 +129,7 @@ int main(void){
                 printf("\nOpcao invalida, tente novamente");
                 system("pause");
         }
-    }while(opcaoMenu != 4);
+    }while(opcaoMenu != 5);
 
 }
-
-void top(){
-
-    if(corrente == NULL){
-        printf("A pilha não possui nenhum valor, então seu topo é Nulo. \n");
-    }else{
-        printf("Valor no topo: %i \n", corrente -> dados);
-    }
-
-
-}
-
-void push(int valor){
-
-    if(contador > 5){
-        printf("Stack Overflow.\n");
-        printf("A pilha está cheia.");
-    }else{
-        corrente = (pilha *)malloc(sizeof(pilha));
-        corrente -> dados = valor;
-        if(auxiliar == NULL){
-            corrente -> next = NULL;
-            corrente -> back = NULL;
-            auxiliar = corrente;
-            contador = contador + 1;
-        }else{
-            auxiliar -> next = corrente;
-            corrente -> back = auxiliar;
-            corrente -> next = NULL;
-            auxiliar = corrente;
-            contador = contador + 1;
-        }
-    }
-
-}
-
-void pop(int valor){
-
-    if(corrente == NULL){
-        printf("A pilha está vazia. Adicione algo antes de buscar. \n");
-    }else{
-        while(corrente -> dados != valor){
-
-            if(corrente -> back == NULL){
-                corrente -> next = NULL;
-                free(corrente);
-                corrente = NULL;
-                auxiliar = NULL;
-                printf("O elemento não foi encontrado na pilha");
-                contador = contador - 1;
-                }
-
-            auxiliar = auxiliar -> back;
-            free(corrente);
-            auxiliar -> next = NULL;
-            corrente = auxiliar;
-            contador = contador - 1;
-        }
-
-        if(corrente -> dados == valor){
-            auxiliar = auxiliar -> back;
-            free(corrente);
-            auxiliar -> next = NULL;
-            corrente = auxiliar;
-            printf("Valor encontrado no elemento: %i \n", contador);
-            contador = contador - 1;
-        }
-    }
-}
-
 
