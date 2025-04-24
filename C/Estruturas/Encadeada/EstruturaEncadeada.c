@@ -1,145 +1,125 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 typedef struct no{
     int codigo;
-    char nome[20];
-    struct no * prox;
+    struct no * next;
     struct no * back;
 } no;
 
-int cod, op;
-char resp;
-char nomePessoa[20];
-struct no * corrente = NULL, * auxiliar = NULL, * inicio = NULL, * fim = NULL;
 
-void inserir(int numero){
-    struct no * pont;
-    auxiliar = corrente;
+struct no * corrente = NULL, * inicio = NULL, * fim = NULL;
+
+void novoElemento(int numero){
     corrente = (no*)malloc(sizeof(no));
     corrente -> codigo = numero;
+}
 
-    strcpy(&corrente -> nome, &nomePessoa);
+void inserir(int numero){
+    novoElemento(numero);
 
     if (inicio == NULL)
     {
         inicio = corrente;
-        auxiliar = corrente;
         fim = corrente;
         corrente -> back = NULL;
-        corrente -> prox = NULL;
+        corrente -> next = NULL;
 
     }else{
 
-        if(corrente -> codigo <= inicio -> codigo){
-            corrente -> prox = inicio;
-            inicio -> back = corrente;
-            inicio = corrente;
-        }else{
+        corrente -> back = fim;
+        fim -> next = corrente;
+        corrente -> next = NULL;
+        fim = corrente;
 
-            pont = inicio;
-
-            while(corrente -> codigo > pont -> codigo){
-                auxiliar = pont;
-
-                if (pont -> prox == NULL) {
-                    auxiliar -> prox = corrente;
-                    corrente -> back = auxiliar;
-                    corrente -> prox = NULL;
-                    auxiliar = corrente;
-                    fim = corrente;
-                };
-
-                pont = pont -> prox;
-            }
-
-            if((auxiliar -> codigo < corrente -> codigo) && (corrente -> codigo < pont -> codigo)){
-                corrente -> prox = pont;
-                corrente -> back = auxiliar;
-                auxiliar -> prox = corrente;
-            }
-
-
-        }
     }
 }
 
 void exibir(){
+    int resp = 0;
 
-    printf("Imprimir do in�cio ao fim [1] ou do fim ao in�cio [2] ? \n");
+    printf("Imprimir do inicio ao fim [1] ou do fim ao inicio [2] ? \n");
     scanf("%d", &resp);
 
     switch(resp){
         case 1:
-            auxiliar = inicio;
-            while (auxiliar != NULL)
+            corrente = inicio;
+            while (corrente != NULL)
             {
-                printf("Nome: %s \n", auxiliar -> nome);
-                printf("Codigo: %d \n\n", auxiliar -> codigo);
-                auxiliar = auxiliar -> prox;
+                printf("Codigo: %d \n\n", corrente -> codigo);
+                corrente = corrente -> next;
             }
             break;
         case 2:
-            auxiliar = fim;
-            while (auxiliar != NULL)
+            corrente = fim;
+            while (corrente != NULL)
             {
-                printf("Nome: %s \n", auxiliar -> nome);
-                printf("Codigo: %d \n\n", auxiliar -> codigo);
-                auxiliar = auxiliar -> back;
+                printf("Codigo: %d \n\n", corrente -> codigo);
+                corrente = corrente -> back;
             }
             break;
         default:
-            printf("Resposta inv�lida.");
+            printf("Resposta invalida.");
     }
 
 
 }
 
 void excluir(){
-    auxiliar = inicio;
-    int cont = 0;
-    int elem;
-    struct no * pont;
+    corrente = inicio;
 
-    printf("Digite o elemento a ser deletado:");
-    scanf("%d", &elem);
+    int valor = 0;
+    bool achou = false;
 
-    if(elem == 0){
-    auxiliar = inicio -> prox;
-    free(inicio);
-    inicio = auxiliar;
+
+    printf("Digite o valor a ser deletado:");
+    scanf("%d", &valor);
+
+    if(inicio == NULL){
+        printf("A lista esta vazia");
+
     }else{
-        while(true){
-            if(auxiliar -> prox == NULL){
-                printf("Elementro invalido.\n");
-                break;
-            }
-            else if((cont + 1) == elem){
-                pont = auxiliar;
-                auxiliar = auxiliar -> prox;
 
-                if(auxiliar -> prox == NULL){
-                    pont -> prox = NULL;
-                    free(auxiliar);
-                    corrente = pont;
-                }else{
-                    pont -> prox = auxiliar -> prox;
-                    free(auxiliar);
+        if(inicio -> codigo == valor){
+            inicio = inicio -> next;
+            free(corrente);
+            inicio -> back = NULL;
+        }else{
+
+            corrente = corrente -> next;
+            while(corrente != NULL && corrente != fim){
+
+                if(corrente -> codigo == valor){
+                    corrente -> back -> next = corrente -> next;
+                    corrente -> next -> back = corrente -> back;
+                    free(corrente);
+                    achou = true;
+                    break;
                 }
-                break;
+                corrente = corrente -> next;
+            }
+
+            if(corrente == fim && corrente -> codigo == valor){
+                fim = fim -> back;
+                fim -> next = NULL;
+                free(corrente);
+                achou = true;
+            }
+
+
+            if(achou){
+                printf("Elemento apagado");
             }else{
-                auxiliar = auxiliar -> prox;
-                cont++;
+                printf("Elemento não encontrado na lista");
             }
         }
     }
 }
 
-
-int main(void){
+int main(){
+int cod = 0, op = 0;
+char resp = ' ';
 
 
 do{
@@ -160,9 +140,6 @@ do{
             do{
                 printf("Informe o codigo \n");
                 scanf("%d", &cod);
-
-                printf("Informe o nome \n");
-                scanf("%s", &nomePessoa);
 
                 inserir(cod);
 
@@ -202,5 +179,8 @@ do{
 }while(op != 4);
 
 
+
+return 0;
 }
+
 
