@@ -8,4 +8,4 @@
 ## Linguagens de programação utilizadas:
 - 🐍 <strong>Python</strong>
 -  <img src="./imagens/imagem_c.png" width="23" alt="Icone linguagem C"><strong> C</strong>
-- <img src="./imagens/imagem_c#.png" width="23" alt="Icone linguagem C#"><strong> C#</strong>
+- <img src="./imagens/imagem_csharp.png" width="23" alt="Icone linguagem C#"><strong> C#</strong>
