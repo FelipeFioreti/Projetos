@@ -23,9 +23,9 @@ void novoTree(int dados){
     corrente -> right = NULL;
 }
 
-int verificaTree(arvore* tree){
+int verificaTree(){
     int opcaoInserir = 0;
-    
+
     printf("Escolha uma opcao para inserir o dado: ");
     printf("\n[ 1 ] Esquerda\n[ 2 ] Centro\n[ 3 ] Direita\n");
 
@@ -35,9 +35,9 @@ int verificaTree(arvore* tree){
         scanf("%d", &opcaoInserir);
         system("cls");
     }while (opcaoInserir < 1 || opcaoInserir > 3);
- 
+
     return opcaoInserir;
-    
+
 }
 
 void inserirTree(int dados){
@@ -50,7 +50,7 @@ void inserirTree(int dados){
         corrente = raiz;
         while (corrente != NULL){
             auxiliar = corrente;
-            switch (verificaTree(corrente))
+            switch (verificaTree())
             {
                 case 1:
                     corrente = corrente -> left;
@@ -70,23 +70,23 @@ void inserirTree(int dados){
                     system("cls");
                     break;
             }
-            
+
         }
 
         novoTree(dados);
-        
+
         if(opcaoInserir == 1){
             auxiliar -> left = corrente;
         }
-        
+
         if (opcaoInserir == 2){
             auxiliar -> center = corrente;
         }
-        
+
         if (opcaoInserir == 3){
             auxiliar -> right = corrente;
         }
-             
+
     }
 
 }
@@ -109,9 +109,28 @@ arvore* visualizarTree(arvore* tree){
     }
 }
 
+arvore* pesquisarTree(int valor, arvore* tree){
+    if(tree == NULL){
+        return NULL;
+    }
+
+    if(valor == tree -> dados){
+        printf("Valor encontrado!");
+        return  NULL;
+    }
+
+    if(tree != NULL){
+        pesquisarTree(valor, tree -> left);
+        pesquisarTree(valor, tree -> center);
+        pesquisarTree(valor, tree -> right);
+    }
+}
+
+
+
 int main(void){
-    int opcaoMenu = 0, valorInserir = 0;
     char respostaInserir = 'S';
+    int opcaoMenu = 0, valorInserir = 0, valorPesquisa = 0;
 
     do{
 
@@ -119,9 +138,8 @@ int main(void){
         system("pause");
         printf("\n [ 1 ] Inserir");
         printf("\n [ 2 ] Visualizar");
-        printf("\n [ 3 ] Topo");
-        printf("\n [ 4 ] Mostrar Pilha");
-        printf("\n [ 5 ] Sair");
+        printf("\n [ 3 ] Pesquisar");
+        printf("\n [ 4 ] Sair");
         printf("\n\nInforme a opcao [ ]");
         scanf("%d", &opcaoMenu);
 
@@ -150,14 +168,13 @@ int main(void){
                 break;
 
             case 3:
+                printf("Digite o valor que quer pesquisar: \n");
+                scanf("%i", &valorPesquisa);
+                pesquisarTree(valorPesquisa, raiz);
                 system("pause");
                 break;
 
             case 4:
-                system("pause");
-                break;
-
-            case 5:
                 printf("\nSaindo...\n");
                 system("pause");
                 exit(0);
@@ -167,7 +184,7 @@ int main(void){
                 printf("\nOpcao invalida, tente novamente");
                 system("pause");
         }
-    }while(opcaoMenu != 5);
+    }while(opcaoMenu != 4);
 
 }
 
