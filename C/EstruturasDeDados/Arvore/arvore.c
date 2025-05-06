@@ -1,3 +1,4 @@
+#include "listaSimples.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -12,8 +13,6 @@ typedef struct arvore{
 } arvore;
 
 struct arvore * raiz = NULL, * auxiliar = NULL, * corrente = NULL;
-
-
 
 void novoTree(int dados){
     corrente = (arvore *)malloc(sizeof(arvore));
@@ -126,6 +125,103 @@ arvore* pesquisarTree(int valor, arvore* tree){
     }
 }
 
+void criarLista(arvore* tree){
+    if(tree == NULL){
+        return;
+    }
+
+    inserir(tree -> dados);
+
+    criarLista(tree -> left);
+    criarLista(tree -> center);
+    criarLista(tree -> right);
+}
+
+int * QuickSort(int * array, int tamanho){
+
+    if(tamanho < 2){
+        return array;
+    }
+
+    int pivo = array[0];
+
+    int * maiores = (int *)malloc(tamanho * sizeof(int));
+    int * menores = (int *)malloc(tamanho * sizeof(int));
+    int countMaior = 0;
+    int countMenor = 0;
+
+    for(int i = 1; i < tamanho; i++){
+        if(array[i] <= pivo){
+            menores[countMenor++] = array[i];
+        }else{
+            maiores[countMaior++] = array[i];
+        }
+    }
+
+    int* menoresOrdenado = QuickSort(menores, countMenor);
+    int* maioresOrdenado = QuickSort(maiores, countMaior);
+
+    int* resultado = (int*)malloc(tamanho * sizeof(int));
+    for (int i = 0; i < countMenor; i++) {
+        resultado[i] = menoresOrdenado[i];
+    }
+
+    resultado[countMenor] = pivo;
+
+    for (int i = 0; i < countMaior; i++) {
+        resultado[countMenor + 1 + i] = maioresOrdenado[i];
+    }
+
+    
+    free(menores);
+    free(maiores);
+
+    return resultado;
+}
+
+int ordenarTree(int * array, int count, arvore * tree){
+    if(tree == NULL){
+        return count;
+    }
+
+    tree -> dados = array[count++];
+
+    if(tree != NULL){
+        count = ordenarTree(array, count, tree->left);
+        count = ordenarTree(array, count, tree -> center);
+        count = ordenarTree(array, count, tree -> right);
+    }
+
+    return count;
+}
+
+void organizarTree(){
+    if(raiz == NULL){
+        printf("A arvore esta vazia\n");
+        return;
+    }
+
+    criarLista(raiz);
+    
+    int count = 0;
+    auxiliarLista = inicioLista;
+    while(auxiliarLista != NULL){
+        count++;
+        auxiliarLista = auxiliarLista -> next;  
+    }
+
+    int array[count];
+
+    auxiliarLista = inicioLista;
+    for(int i = 0; i < count; i++){
+        array[i] = auxiliarLista -> codigo;
+        auxiliarLista = auxiliarLista -> next;
+    }
+    
+    ordenarTree(QuickSort(array, count), 0, raiz);
+    printf("A arvore foi ordenada com sucesso!");
+}
+
 
 
 int main(void){
@@ -139,7 +235,8 @@ int main(void){
         printf("\n [ 1 ] Inserir");
         printf("\n [ 2 ] Visualizar");
         printf("\n [ 3 ] Pesquisar");
-        printf("\n [ 4 ] Sair");
+        printf("\n [ 4 ] Organizar Arvore");
+        printf("\n [ 5 ] Sair");
         printf("\n\nInforme a opcao [ ]");
         scanf("%d", &opcaoMenu);
 
@@ -175,6 +272,11 @@ int main(void){
                 break;
 
             case 4:
+                organizarTree();
+                system("pause");
+                break;
+
+            case 5:
                 printf("\nSaindo...\n");
                 system("pause");
                 exit(0);
@@ -184,7 +286,7 @@ int main(void){
                 printf("\nOpcao invalida, tente novamente");
                 system("pause");
         }
-    }while(opcaoMenu != 4);
+    }while(opcaoMenu != 5);
 
 }
 
