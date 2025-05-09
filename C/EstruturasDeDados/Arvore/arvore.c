@@ -43,7 +43,7 @@ void inserirTree(int dados){
     if(raiz == NULL){
         novoTree(dados);
         raiz = corrente;
-        auxiliar = corrente;
+        auxiliar = NULL;
     }else{
         int opcaoInserir = 0;
         corrente = raiz;
@@ -86,6 +86,7 @@ void inserirTree(int dados){
             auxiliar -> right = corrente;
         }
 
+        auxiliar = NULL;
     }
 
 }
@@ -113,16 +114,59 @@ arvore* pesquisarTree(int valor, arvore* tree){
         return NULL;
     }
 
-    if(valor == tree -> dados){
-        printf("Valor encontrado!");
-        return  NULL;
+    if(auxiliar != NULL){
+        return auxiliar;
     }
 
-    if(tree != NULL){
-        pesquisarTree(valor, tree -> left);
-        pesquisarTree(valor, tree -> center);
-        pesquisarTree(valor, tree -> right);
+    if(valor == tree -> dados){
+        printf("Valor encontrado!");
+        return  tree;
     }
+
+
+    auxiliar = pesquisarTree(valor, tree -> left);
+    auxiliar = pesquisarTree(valor, tree -> center);
+    auxiliar = pesquisarTree(valor, tree -> right);
+
+}
+
+arvore* removeTree(arvore* tree){
+    bool temTree = false;
+
+    if(tree == NULL){
+        return NULL;
+    }
+
+    if(removeTree(tree -> left) == NULL){
+        temTree = false;
+    }else{
+        temTree = temTree || true;
+    }
+
+    if(removeTree(tree -> left) == NULL){
+        temTree = false;
+    }else{
+        temTree = temTree || true;
+    }
+
+    if(removeTree(tree -> left) == NULL){
+        temTree = false;
+    }else{
+        temTree = temTree || true;
+    }
+
+    if(!temTree){
+        free(tree);
+    }
+
+}
+
+arvore* removerTree(int valor, arvore* tree){
+    auxiliar = NULL;
+    auxiliar = pesquisarTree(valor, tree);
+
+    removeTree(auxiliar);
+    free(auxiliar);
 }
 
 void criarLista(arvore* tree){
@@ -172,7 +216,7 @@ int * QuickSort(int * array, int tamanho){
         resultado[countMenor + 1 + i] = maioresOrdenado[i];
     }
 
-    
+
     free(menores);
     free(maiores);
 
@@ -202,12 +246,12 @@ void organizarTree(){
     }
 
     criarLista(raiz);
-    
+
     int count = 0;
     auxiliarLista = inicioLista;
     while(auxiliarLista != NULL){
         count++;
-        auxiliarLista = auxiliarLista -> next;  
+        auxiliarLista = auxiliarLista -> next;
     }
 
     int array[count];
@@ -217,7 +261,7 @@ void organizarTree(){
         array[i] = auxiliarLista -> codigo;
         auxiliarLista = auxiliarLista -> next;
     }
-    
+
     ordenarTree(QuickSort(array, count), 0, raiz);
     printf("A arvore foi ordenada com sucesso!");
 }
@@ -226,7 +270,7 @@ void organizarTree(){
 
 int main(void){
     char respostaInserir = 'S';
-    int opcaoMenu = 0, valorInserir = 0, valorPesquisa = 0;
+    int opcaoMenu = 0, valorInserir = 0, valorPesquisa = 0, valorRemove = 0;
 
     do{
 
@@ -277,6 +321,14 @@ int main(void){
                 break;
 
             case 5:
+                auxiliar = NULL;
+                printf("Digite o valor que quer remover: \n");
+                scanf("%i", &valorRemove);
+                removerTree(valorRemove, raiz);
+                system("pause");
+                break;
+
+            case 6:
                 printf("\nSaindo...\n");
                 system("pause");
                 exit(0);
