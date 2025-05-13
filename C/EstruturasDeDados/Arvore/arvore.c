@@ -280,7 +280,8 @@ int main(void){
         printf("\n [ 2 ] Visualizar");
         printf("\n [ 3 ] Pesquisar");
         printf("\n [ 4 ] Organizar Arvore");
-        printf("\n [ 5 ] Sair");
+        printf("\n [ 5 ] Remover Arvore");
+        printf("\n [ 6 ] Sair");
         printf("\n\nInforme a opcao [ ]");
         scanf("%d", &opcaoMenu);
 
