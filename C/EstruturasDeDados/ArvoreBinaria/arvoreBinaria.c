@@ -12,36 +12,66 @@ typedef struct arvore{
 
 struct arvore * raiz = NULL, * auxiliar = NULL, * corrente = NULL;
 
-void novoTree(int dados){
+arvore * novoTree(int dados){
     corrente = (arvore *)malloc(sizeof(arvore));
     corrente -> dados = dados;
     corrente -> left = NULL;
     corrente -> right = NULL;
+    return corrente;
 }
 
 arvore * inserirTree(arvore * tree, int valor){
-    if(raiz == null){
-        novoTree(valor);
-        raiz = corrente;
-    }else{
+   if(raiz == NULL){
+        raiz = novoTree(valor);
+    } 
+    else{
 
         if(tree == NULL){
+            novoTree(valor);
+            return corrente;
+        }
+
+        if(valor == tree -> dados){
+            printf("Valor ja existe na arvore\n");
             return tree;
         }
 
-        auxiliar = tree;
-        corrente = tree;
-        if(tree -> dados == valor){
-            printf("Nao podem ser inseridos valores repetidos.");
-            return;
+        if(valor < tree -> dados){
+            tree -> left = inserirTree(tree -> left, valor);
         }
+        else{
+            tree -> right = inserirTree(tree -> right, valor);
+        }
+    }
+    return tree;
+}
 
-        if(tree -> dados > valor){
-            novoTree(valor);
-            if(inserirTree(corrente -> left, valor) == NULL){
-                auxiliar -> left = corrente;
-            }
-        }
+void visualizarTree(arvore * tree){
+    if(tree != NULL){
+        printf("%d ", tree -> dados);
+        printf("\n");
+
+        visualizarTree(tree -> left);
+
+        visualizarTree(tree -> right);
+    }
+}
+
+arvore * pesquisarTree(arvore * tree, int valor){
+    if(tree == NULL){
+        return NULL;
+    }
+
+    if(tree -> dados == valor){
+        printf("Valor %d encontrado na arvore\n", valor);
+        return tree;
+    }
+
+    if(valor < tree -> dados){
+        pesquisarTree(tree -> left, valor);
+    }
+    else{
+        pesquisarTree(tree -> right, valor);
     }
 }
 
@@ -55,7 +85,9 @@ int main(void){
         system("cls");
         system("pause");
         printf("\n [ 1 ] Inserir");
-        printf("\n [ 2 ] Sair");
+        printf("\n [ 2 ] Visualizar");
+        printf("\n [ 3 ] Pesquisar");
+        printf("\n [ 4 ] Sair");
         printf("\n\nInforme a opcao [ ]");
         scanf("%d", &opcaoMenu);
 
@@ -66,7 +98,7 @@ int main(void){
                     printf("Informe o codigo \n");
                     scanf("%d", &valorInserir);
 
-                    inserirTree(valorInserir);
+                    inserirTree(raiz, valorInserir);
 
                     printf("Quer continuar a inserir?");
                     scanf(" %c", &respostaInserir);
@@ -78,6 +110,26 @@ int main(void){
                 break;
 
             case 2:
+                printf("Visualizando a arvore...\n");
+                printf("\n\n");
+                visualizarTree(raiz);
+                system("pause");
+                break;
+
+            case 3:
+            
+                printf("Informe o valor a ser pesquisado\n");
+                scanf("%d", &valorPesquisa);
+
+                printf("Pesquisando na arvore...\n");
+                printf("\n\n");
+                if(pesquisarTree(raiz, valorPesquisa) == NULL){
+                    printf("Valor %d nao encontrado na arvore\n", valorPesquisa);
+                }
+                system("pause");
+                break;
+
+            case 4:
                 printf("\nSaindo...\n");
                 system("pause");
                 exit(0);
@@ -87,7 +139,7 @@ int main(void){
                 printf("\nOpcao invalida, tente novamente");
                 system("pause");
         }
-    }while(opcaoMenu != 2);
+    }while(opcaoMenu != 4);
 
 }
 

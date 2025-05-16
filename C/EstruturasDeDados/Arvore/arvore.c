@@ -119,10 +119,9 @@ arvore* pesquisarTree(int valor, arvore* tree){
     }
 
     if(valor == tree -> dados){
-        printf("Valor encontrado!");
-        return  tree;
+        printf("Valor encontrado!\n");
+        return tree;
     }
-
 
     auxiliar = pesquisarTree(valor, tree -> left);
     auxiliar = pesquisarTree(valor, tree -> center);
@@ -130,43 +129,22 @@ arvore* pesquisarTree(int valor, arvore* tree){
 
 }
 
-arvore* removeTree(arvore* tree){
-    bool temTree = false;
-
+// Tem que ser arrumada.
+void removerTree(int valor, arvore* tree){
     if(tree == NULL){
-        return NULL;
+        printf("A arvore esta vazia\n");
+        return;
     }
 
-    if(removeTree(tree -> left) == NULL){
-        temTree = false;
-    }else{
-        temTree = temTree || true;
-    }
-
-    if(removeTree(tree -> left) == NULL){
-        temTree = false;
-    }else{
-        temTree = temTree || true;
-    }
-
-    if(removeTree(tree -> left) == NULL){
-        temTree = false;
-    }else{
-        temTree = temTree || true;
-    }
-
-    if(!temTree){
+    if(tree -> dados == valor){
         free(tree);
+        printf("Valor %d removido com sucesso!\n", valor);
+        return;
     }
 
-}
-
-arvore* removerTree(int valor, arvore* tree){
-    auxiliar = NULL;
-    auxiliar = pesquisarTree(valor, tree);
-
-    removeTree(auxiliar);
-    free(auxiliar);
+    removerTree(valor, tree -> left);
+    removerTree(valor, tree -> center);
+    removerTree(valor, tree -> right);
 }
 
 void criarLista(arvore* tree){
