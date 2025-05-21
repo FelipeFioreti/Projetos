@@ -3,17 +3,17 @@
 #include <string.h>
 #include <ctype.h>
 
-#define TAMANHO 26
+#define TAMANHO_TABELA 26
 #define TAM_MAX_NOME 100
 
 // Estrutura de um nó da lista
-typedef struct Table {
-    char chave[TAM_MAX_NOME];
+typedef struct No {
+    char nome[TAM_MAX_NOME];
     struct No* proximo;
-} Table;
+} No;
 
 // A tabela hash: array de ponteiros para listas (uma para cada letra)
-Table* hashTable[TAMANHO];
+No* tabela[TAMANHO_TABELA];
 
 // Função hash: mapeia a primeira letra para um índice de 0 a 25
 int hash(char c) {
@@ -24,13 +24,6 @@ int hash(char c) {
     return -1; // caractere inválido
 }
 
-Table * novoElemento(char* nome){
-    Table* novo = (Table*) malloc(sizeof(Table));
-    strcpy(novo->chave, nome);
-    novo->proximo = NULL;
-    return novo;
-}
-
 // Inserir nome na hash table
 void inserir(char* nome) {
     int indice = hash(nome[0]);
@@ -39,24 +32,28 @@ void inserir(char* nome) {
         return;
     }
 
-    Table * novo = novoElemento(nome);
+    // Criar novo nó
+    No* novo = (No*) malloc(sizeof(No));
+    strcpy(novo->nome, nome);
+    novo->proximo = NULL;
 
-    if (hashTable[indice] == NULL) {
-        hashTable[indice] = novo;
+    // Inserir na lista da posição correta
+    if (tabela[indice] == NULL) {
+        tabela[indice] = novo;
     } else {
-        
-        novo->proximo = hashTable[indice];
-        hashTable[indice] = novo;
+        // Insere no início (ou você pode ordenar se quiser)
+        novo->proximo = tabela[indice];
+        tabela[indice] = novo;
     }
 }
 
 // Imprimir a tabela
 void imprimirTabela() {
-    for (int i = 0; i < TAMANHO; i++) {
+    for (int i = 0; i < TAMANHO_TABELA; i++) {
         printf("[%c]: ", i + 'A');
-        Table* atual = hashTable[i];
+        No* atual = tabela[i];
         while (atual != NULL) {
-            printf("%s -> ", atual->chave);
+            printf("%s -> ", atual->nome);
             atual = atual->proximo;
         }
         printf("NULL\n");
@@ -65,10 +62,10 @@ void imprimirTabela() {
 
 // Liberar memória
 void liberarTabela() {
-    for (int i = 0; i < TAMANHO; i++) {
-        Table* atual = hashTable[i];
+    for (int i = 0; i < TAMANHO_TABELA; i++) {
+        No* atual = tabela[i];
         while (atual != NULL) {
-            Table* temp = atual;
+            No* temp = atual;
             atual = atual->proximo;
             free(temp);
         }
