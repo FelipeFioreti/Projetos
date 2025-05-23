@@ -39,7 +39,7 @@ void push(int valor){
         topo -> back = auxiliar;
         auxiliar = topo;
     }
-    
+
 }
 
 void pop(){
@@ -65,7 +65,7 @@ void mostrarPilha() {
 
 void liberarPilha() {
     while (topo != NULL) {
-        pop(); 
+        pop();
     }
 }
 
