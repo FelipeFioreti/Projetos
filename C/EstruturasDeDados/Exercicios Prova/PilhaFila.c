@@ -19,7 +19,7 @@ typedef struct Fila{
 } Fila;
 
 struct Pilha * topoPilha = NULL, * auxiliarPilha = NULL;
-struct Fila * topoFila = NULL, * auxiliarFila = NULL;
+struct Fila * inicioFila = NULL, * fimFila = NULL, * correnteFila = NULL;
 
 novoElementoPilha(char * dados){
 
@@ -29,8 +29,9 @@ novoElementoPilha(char * dados){
 
 novoElementoFila(char * dados){
 
-    topoFila = (Fila*)malloc(sizeof(Fila));
-    strcpy(topoFila -> nome, dados);
+    correnteFila = (Fila*)malloc(sizeof(Fila));
+    strcpy(correnteFila -> nome, dados);
+    correnteFila -> next = NULL;
 }
 
 void topPilha(){
@@ -41,36 +42,17 @@ void topPilha(){
     printf("Topo: %s \n", topoPilha->nome);
 }
 
-void topoFila(){
-    if(topoFila == NULL){
-        printf("Topo esta vazio\n");
-        return;
-    }
-    printf("Topo: %s \n", topoFila -> nome);
-}
-
 void pushPilha(char * dados){
 
     if(topoPilha == NULL){
-        novoElemento(dados);
+        novoElementoPilha(dados);
         topoPilha -> back = NULL;
     }else{
 
         auxiliarPilha = topoPilha;
-        novoElemento(dados);
+        novoElementoPilha(dados);
         topoPilha -> back = auxiliarPilha;
     }
-}
-
-void pushFila(char * dados){
-
-    if(topoFila == NULL){
-        novoElementoFila(dados);
-        topoFila -> next = NULL;
-    }else{
-
-    }
-
 }
 
 void popPilha(){
@@ -91,6 +73,44 @@ void mostrarPilha() {
     printf("\n");
 }
 
+void enqueueFila(char * dados){
+    if(inicioFila == NULL){
+        novoElementoFila(dados);
+        inicioFila = correnteFila;
+        fimFila = correnteFila;
+    }else{
+        novoElementoFila(dados);
+        fimFila -> next = correnteFila;
+        fimFila = correnteFila;
+    }
+}
+
+void transformar(){
+
+    if(topoPilha == NULL){
+        printf("Nao e possivel transformar para fila. A pilha esta vazia. \n");
+        return;
+    }
+
+    while(topoPilha != NULL){
+        enqueueFila(topoPilha -> nome);
+        popPilha();
+    }
+}
+
+void exibirFila(){
+    if(inicioFila == NULL){
+        printf("A fila esta vazia.\n");
+        return;
+    }
+
+    correnteFila = inicioFila;
+    while(correnteFila != NULL){
+        printf("%s", correnteFila -> nome);
+        correnteFila = correnteFila -> next;
+    }
+
+}
 
 int main (){
 
@@ -108,7 +128,9 @@ char respostaInserir = ' ';
     printf("\n [ 2 ] Pop");
     printf("\n [ 3 ] Topo");
     printf("\n [ 4 ] Mostrar Pilha");
-    printf("\n [ 5 ] Sair");
+    printf("\n [ 5 ] Transformar para Fila");
+    printf("\n [ 6 ] Mostrar Fila");
+    printf("\n [ 7 ] Sair");
     printf("\n\nInforme a opcao [ ]");
     scanf("%d", &opcaoMenu);
 
@@ -150,8 +172,17 @@ char respostaInserir = ' ';
                 break;
 
             case 5:
-                printf("\nSaindo...\n");
+                transformar();
+                system("pause");
+                break;
 
+            case 6:
+                exibirFila();
+                system("pause");
+                break;
+
+            case 7:
+                printf("\nSaindo...\n");
                 system("pause");
                 exit(0);
                 break;
@@ -160,7 +191,7 @@ char respostaInserir = ' ';
                 printf("\nOpcao invalida, tente novamente");
                 system("pause");
         }
-    }while(opcaoMenu != 5);
+    }while(opcaoMenu != 7);
 
 
     return 0;
